@@ -134,7 +134,7 @@ M0_prob = 0.5 # probability of correct guesses if M0 is true
 Primary_analysis = "Mixed_NHST" # "binom.test" or "Mixed_NHST"
 
 
-results_of_simulation = pbreplicate(100, simulation_function(erotic_trial_per_person = erotic_trial_per_person, True_prob = True_prob, max_num_trials = max_num_trials, SD_personal_differences = SD_personal_differences, Primary_analysis = Primary_analysis, data_dataframe = data_dataframe, Inference_threshold_robustness_NHST = Inference_threshold_robustness_NHST, M0_prob = M0_prob))
+results_of_simulation = pbreplicate(1000, simulation_function(erotic_trial_per_person = erotic_trial_per_person, True_prob = True_prob, max_num_trials = max_num_trials, SD_personal_differences = SD_personal_differences, Primary_analysis = Primary_analysis, data_dataframe = data_dataframe, Inference_threshold_robustness_NHST = Inference_threshold_robustness_NHST, M0_prob = M0_prob))
 
 M1_detection_rate = sum((results_of_simulation == "M1"))/length(results_of_simulation)
 M1_detection_rate # power = 0.95
@@ -151,7 +151,7 @@ M0_prob = 0.5 # probability of correct guesses if M0 is true
 Primary_analysis = "Mixed_NHST" # "binom.test" or "Mixed_NHST"
 
 
-results_of_simulation = pbreplicate(100, simulation_function(erotic_trial_per_person = erotic_trial_per_person, True_prob = True_prob, max_num_trials = max_num_trials, SD_personal_differences = SD_personal_differences, Primary_analysis = Primary_analysis, data_dataframe = data_dataframe, Inference_threshold_robustness_NHST = Inference_threshold_robustness_NHST, M0_prob = M0_prob))
+results_of_simulation = pbreplicate(1000, simulation_function(erotic_trial_per_person = erotic_trial_per_person, True_prob = True_prob, max_num_trials = max_num_trials, SD_personal_differences = SD_personal_differences, Primary_analysis = Primary_analysis, data_dataframe = data_dataframe, Inference_threshold_robustness_NHST = Inference_threshold_robustness_NHST, M0_prob = M0_prob))
 
 M1_detection_rate = sum((results_of_simulation == "M1"))/length(results_of_simulation)
 M1_detection_rate  # alpha = ...
