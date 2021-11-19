@@ -1,9 +1,25 @@
-library(lme4)
-library(pbapply)
+#############################################################
+#                                                           #
+#                        Packages                           #
+#                                                           #
+#############################################################
+
+library(lme4) # for glmer()
+library(pbapply) # for pbreplicate()
+
+#############################################################
+#                                                           #
+#                   Custom functions                        #
+#                                                           #
+#############################################################
+
+### for rounding to a specific base
 
 mround <- function(x,base){ 
   base*round(x/base) 
 } 
+
+### to simulate personal differences in psi ability
 
 talent_randomizer <- function(True_prob, SD_personal_differences){
   talent = True_prob + rnorm(mean = 0, sd = SD_personal_differences, n = 1)
@@ -11,9 +27,10 @@ talent_randomizer <- function(True_prob, SD_personal_differences){
   return(talent)
 }
 
-# convert logit to probability
-# this is used for conversion of the results of the
-# logistic regression to the probability scale
+### to convert logit to probability
+### this is used for conversion of the results of the
+### logistic regression to the probability scale
+
 logit2prob <- function(logit){
   odds <- exp(logit)
   prob <- odds / (1 + odds)
@@ -21,7 +38,9 @@ logit2prob <- function(logit){
 }
 
 
-
+### generates data based on a given true average probability 
+### of success in the population and uses talent_randomizer()
+### if necessary to produce personal differences in ability
 
 data_generator <- function(erotic_trial_per_person, True_prob, max_num_trials, SD_personal_differences){
   if((SD_personal_differences != 0) & (True_prob != 0.5)){
@@ -38,9 +57,11 @@ data_generator <- function(erotic_trial_per_person, True_prob, max_num_trials, S
 }
 
 
-
-
-
+### the data analysis function that calculates the confidence
+### for the estimated probability of success
+### depending on the Primary_analysis parameter it either uses
+### mixed logistic regression ("Mixed_NHST") or a simple 
+### binomial test ("binom.test")
 
 analyser <- function(Primary_analysis, data_dataframe, Inference_threshold_robustness_NHST, M0_prob){
   if(any(Primary_analysis == "Mixed_NHST")){  
@@ -74,6 +95,8 @@ analyser <- function(Primary_analysis, data_dataframe, Inference_threshold_robus
   return(conclusion)
 }
 
+### a function combining the data_generator() and analyser() functions
+
 simulation_function <- function(erotic_trial_per_person, True_prob, max_num_trials, SD_personal_differences, Primary_analysis, data_dataframe, Inference_threshold_robustness_NHST, M0_prob = M0_prob){
   data_dataframe = data_generator(erotic_trial_per_person = erotic_trial_per_person, True_prob = True_prob, max_num_trials = max_num_trials, SD_personal_differences = SD_personal_differences)
   result = analyser(Primary_analysis = Primary_analysis, data_dataframe = data_dataframe, Inference_threshold_robustness_NHST = Inference_threshold_robustness_NHST, M0_prob = M0_prob)
@@ -82,9 +105,17 @@ simulation_function <- function(erotic_trial_per_person, True_prob, max_num_tria
 
 
 
+#############################################################
+#                                                           #
+#                      Power analysis                       #
+#                                                           #
+#############################################################
 
+# number of iterations to use in the simulation
 
-# power to detect 0.5% lower than chance correct guess rate when using binomial test
+iterations = 1000
+
+### power to detect 0.5% lower than chance correct guess rate when using binomial test
 
 erotic_trial_per_person = 18
 True_prob = 0.495 # true probability of correct guesses in the population
@@ -95,13 +126,13 @@ M0_prob = 0.5 # probability of correct guesses if M0 is true
 Primary_analysis = "binom.test" # "binom.test" or "Mixed_NHST"
 
 
-results_of_simulation = pbreplicate(1000, simulation_function(erotic_trial_per_person = erotic_trial_per_person, True_prob = True_prob, max_num_trials = max_num_trials, SD_personal_differences = SD_personal_differences, Primary_analysis = Primary_analysis, data_dataframe = data_dataframe, Inference_threshold_robustness_NHST = Inference_threshold_robustness_NHST, M0_prob = M0_prob))
+results_of_simulation = pbreplicate(iterations, simulation_function(erotic_trial_per_person = erotic_trial_per_person, True_prob = True_prob, max_num_trials = max_num_trials, SD_personal_differences = SD_personal_differences, Primary_analysis = Primary_analysis, data_dataframe = data_dataframe, Inference_threshold_robustness_NHST = Inference_threshold_robustness_NHST, M0_prob = M0_prob))
 
 M1_detection_rate = sum((results_of_simulation == "M1"))/length(results_of_simulation)
 M1_detection_rate # power = 0.952
 
 
-# false detection rate (alpha error probability) when using binomial test
+### false detection rate (alpha error probability) when using binomial test
 
 erotic_trial_per_person = 18
 True_prob = 0.5 # true probability of correct guesses in the population
@@ -112,7 +143,7 @@ M0_prob = 0.5 # probability of correct guesses if M0 is true
 Primary_analysis = "binom.test" # "binom.test" or "Mixed_NHST"
 
 
-results_of_simulation = pbreplicate(1000, simulation_function(erotic_trial_per_person = erotic_trial_per_person, True_prob = True_prob, max_num_trials = max_num_trials, SD_personal_differences = SD_personal_differences, Primary_analysis = Primary_analysis, data_dataframe = data_dataframe, Inference_threshold_robustness_NHST = Inference_threshold_robustness_NHST, M0_prob = M0_prob))
+results_of_simulation = pbreplicate(iterations, simulation_function(erotic_trial_per_person = erotic_trial_per_person, True_prob = True_prob, max_num_trials = max_num_trials, SD_personal_differences = SD_personal_differences, Primary_analysis = Primary_analysis, data_dataframe = data_dataframe, Inference_threshold_robustness_NHST = Inference_threshold_robustness_NHST, M0_prob = M0_prob))
 
 M1_detection_rate = sum((results_of_simulation == "M1"))/length(results_of_simulation)
 M1_detection_rate  # alpha = 0.036
@@ -120,10 +151,7 @@ M1_detection_rate  # alpha = 0.036
 
 
 
-
-
-
-# power to detect 0.5% lower than chance correct guess rate when using mixed logistic regression
+### power to detect 0.5% lower than chance correct guess rate when using mixed logistic regression
 
 erotic_trial_per_person = 18
 True_prob = 0.495 # true probability of correct guesses in the population
@@ -134,13 +162,13 @@ M0_prob = 0.5 # probability of correct guesses if M0 is true
 Primary_analysis = "Mixed_NHST" # "binom.test" or "Mixed_NHST"
 
 
-results_of_simulation = pbreplicate(1000, simulation_function(erotic_trial_per_person = erotic_trial_per_person, True_prob = True_prob, max_num_trials = max_num_trials, SD_personal_differences = SD_personal_differences, Primary_analysis = Primary_analysis, data_dataframe = data_dataframe, Inference_threshold_robustness_NHST = Inference_threshold_robustness_NHST, M0_prob = M0_prob))
+results_of_simulation = pbreplicate(iterations, simulation_function(erotic_trial_per_person = erotic_trial_per_person, True_prob = True_prob, max_num_trials = max_num_trials, SD_personal_differences = SD_personal_differences, Primary_analysis = Primary_analysis, data_dataframe = data_dataframe, Inference_threshold_robustness_NHST = Inference_threshold_robustness_NHST, M0_prob = M0_prob))
 
 M1_detection_rate = sum((results_of_simulation == "M1"))/length(results_of_simulation)
 M1_detection_rate # power = 0.95
 
 
-# false detection rate (alpha error probability) when using mixed logistic regression
+### false detection rate (alpha error probability) when using mixed logistic regression
 
 erotic_trial_per_person = 18
 True_prob = 0.5 # true probability of correct guesses in the population
@@ -151,7 +179,7 @@ M0_prob = 0.5 # probability of correct guesses if M0 is true
 Primary_analysis = "Mixed_NHST" # "binom.test" or "Mixed_NHST"
 
 
-results_of_simulation = pbreplicate(1000, simulation_function(erotic_trial_per_person = erotic_trial_per_person, True_prob = True_prob, max_num_trials = max_num_trials, SD_personal_differences = SD_personal_differences, Primary_analysis = Primary_analysis, data_dataframe = data_dataframe, Inference_threshold_robustness_NHST = Inference_threshold_robustness_NHST, M0_prob = M0_prob))
+results_of_simulation = pbreplicate(iterations, simulation_function(erotic_trial_per_person = erotic_trial_per_person, True_prob = True_prob, max_num_trials = max_num_trials, SD_personal_differences = SD_personal_differences, Primary_analysis = Primary_analysis, data_dataframe = data_dataframe, Inference_threshold_robustness_NHST = Inference_threshold_robustness_NHST, M0_prob = M0_prob))
 
 M1_detection_rate = sum((results_of_simulation == "M1"))/length(results_of_simulation)
-M1_detection_rate  # alpha = ...
+M1_detection_rate  # alpha = 0.07
