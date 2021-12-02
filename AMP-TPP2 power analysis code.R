@@ -91,7 +91,7 @@ analyser <- function(Primary_analysis, data_dataframe, Inference_threshold_robus
     
   }
   
-  if(CI_upper < M0_prob){conclusion = "M1"} else {conclusion = "Inconclusive"}
+  if(CI_upper < M0_prob){conclusion = "M1"} else if(CI_lower > M0_prob){conclusion = "M1"} else {conclusion = "Inconclusive"}
   return(conclusion)
 }
 
@@ -119,9 +119,9 @@ iterations = 1000
 
 erotic_trial_per_person = 18
 True_prob = 0.495 # true probability of correct guesses in the population
-max_num_trials = 110000
+max_num_trials = 120000
 SD_personal_differences = 0 # 0.15 would produce some very lucky people but still realistic
-Inference_threshold_robustness_NHST = 0.1 # 0.1 means 90% CI, but if it is one sided, this will result in 5% alpha
+Inference_threshold_robustness_NHST = 0.05
 M0_prob = 0.5 # probability of correct guesses if M0 is true
 Primary_analysis = "binom.test" # "binom.test" or "Mixed_NHST"
 
@@ -136,9 +136,9 @@ M1_detection_rate # power = 0.952
 
 erotic_trial_per_person = 18
 True_prob = 0.5 # true probability of correct guesses in the population
-max_num_trials = 110000
+max_num_trials = 120000
 SD_personal_differences = 0 # 0.15 would produce some very lucky people but still realistic
-Inference_threshold_robustness_NHST = 0.1 # 0.1 means 90% CI, but if it is one sided, this will result in 5% alpha
+Inference_threshold_robustness_NHST = 0.05
 M0_prob = 0.5 # probability of correct guesses if M0 is true
 Primary_analysis = "binom.test" # "binom.test" or "Mixed_NHST"
 
@@ -155,9 +155,9 @@ M1_detection_rate  # alpha = 0.036
 
 erotic_trial_per_person = 18
 True_prob = 0.495 # true probability of correct guesses in the population
-max_num_trials = 110000
+max_num_trials = 120000
 SD_personal_differences = 0 # 0.15 would produce some very lucky people but still realistic
-Inference_threshold_robustness_NHST = 0.1 # 0.1 means 90% CI, but if it is one sided, this will result in 5% alpha
+Inference_threshold_robustness_NHST = 0.05
 M0_prob = 0.5 # probability of correct guesses if M0 is true
 Primary_analysis = "Mixed_NHST" # "binom.test" or "Mixed_NHST"
 
@@ -172,9 +172,9 @@ M1_detection_rate # power = 0.95
 
 erotic_trial_per_person = 18
 True_prob = 0.5 # true probability of correct guesses in the population
-max_num_trials = 110000
+max_num_trials = 120000
 SD_personal_differences = 0 # 0.15 would produce some very lucky people but still realistic
-Inference_threshold_robustness_NHST = 0.1 # 0.1 means 90% CI, but if it is one sided, this will result in 5% alpha
+Inference_threshold_robustness_NHST = 0.05
 M0_prob = 0.5 # probability of correct guesses if M0 is true
 Primary_analysis = "Mixed_NHST" # "binom.test" or "Mixed_NHST"
 
