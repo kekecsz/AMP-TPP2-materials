@@ -129,7 +129,7 @@ Primary_analysis = "binom.test" # "binom.test" or "Mixed_NHST"
 results_of_simulation = pbreplicate(iterations, simulation_function(erotic_trial_per_person = erotic_trial_per_person, True_prob = True_prob, max_num_trials = max_num_trials, SD_personal_differences = SD_personal_differences, Primary_analysis = Primary_analysis, data_dataframe = data_dataframe, Inference_threshold_robustness_NHST = Inference_threshold_robustness_NHST, M0_prob = M0_prob))
 
 M1_detection_rate = sum((results_of_simulation == "M1"))/length(results_of_simulation)
-M1_detection_rate # power = 0.952
+M1_detection_rate # power = 0.946
 
 
 ### false detection rate (alpha error probability) when using binomial test
@@ -146,7 +146,7 @@ Primary_analysis = "binom.test" # "binom.test" or "Mixed_NHST"
 results_of_simulation = pbreplicate(iterations, simulation_function(erotic_trial_per_person = erotic_trial_per_person, True_prob = True_prob, max_num_trials = max_num_trials, SD_personal_differences = SD_personal_differences, Primary_analysis = Primary_analysis, data_dataframe = data_dataframe, Inference_threshold_robustness_NHST = Inference_threshold_robustness_NHST, M0_prob = M0_prob))
 
 M1_detection_rate = sum((results_of_simulation == "M1"))/length(results_of_simulation)
-M1_detection_rate  # alpha = 0.036
+M1_detection_rate  # alpha = 0.07
 
 
 
@@ -165,7 +165,7 @@ Primary_analysis = "Mixed_NHST" # "binom.test" or "Mixed_NHST"
 results_of_simulation = pbreplicate(iterations, simulation_function(erotic_trial_per_person = erotic_trial_per_person, True_prob = True_prob, max_num_trials = max_num_trials, SD_personal_differences = SD_personal_differences, Primary_analysis = Primary_analysis, data_dataframe = data_dataframe, Inference_threshold_robustness_NHST = Inference_threshold_robustness_NHST, M0_prob = M0_prob))
 
 M1_detection_rate = sum((results_of_simulation == "M1"))/length(results_of_simulation)
-M1_detection_rate # power = 0.95
+M1_detection_rate # power = 0.93
 
 
 ### false detection rate (alpha error probability) when using mixed logistic regression
@@ -182,4 +182,4 @@ Primary_analysis = "Mixed_NHST" # "binom.test" or "Mixed_NHST"
 results_of_simulation = pbreplicate(iterations, simulation_function(erotic_trial_per_person = erotic_trial_per_person, True_prob = True_prob, max_num_trials = max_num_trials, SD_personal_differences = SD_personal_differences, Primary_analysis = Primary_analysis, data_dataframe = data_dataframe, Inference_threshold_robustness_NHST = Inference_threshold_robustness_NHST, M0_prob = M0_prob))
 
 M1_detection_rate = sum((results_of_simulation == "M1"))/length(results_of_simulation)
-M1_detection_rate  # alpha = 0.07
+M1_detection_rate  # alpha = 0.05
