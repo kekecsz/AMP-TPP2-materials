@@ -114,12 +114,13 @@ simulation_function <- function(erotic_trial_per_person, True_prob, max_num_tria
 # number of iterations to use in the simulation
 
 iterations = 1000
-
+max_num_trials = 127000 
+  
 ### power to detect 0.5% lower than chance correct guess rate when using binomial test
 
 erotic_trial_per_person = 18
 True_prob = 0.495 # true probability of correct guesses in the population
-max_num_trials = 120000
+max_num_trials = max_num_trials
 SD_personal_differences = 0 # 0.15 would produce some very lucky people but still realistic
 Inference_threshold_robustness_NHST = 0.05
 M0_prob = 0.5 # probability of correct guesses if M0 is true
@@ -136,7 +137,7 @@ M1_detection_rate # power = 0.946
 
 erotic_trial_per_person = 18
 True_prob = 0.5 # true probability of correct guesses in the population
-max_num_trials = 120000
+max_num_trials = max_num_trials
 SD_personal_differences = 0 # 0.15 would produce some very lucky people but still realistic
 Inference_threshold_robustness_NHST = 0.05
 M0_prob = 0.5 # probability of correct guesses if M0 is true
@@ -155,7 +156,7 @@ M1_detection_rate  # alpha = 0.07
 
 erotic_trial_per_person = 18
 True_prob = 0.495 # true probability of correct guesses in the population
-max_num_trials = 120000
+max_num_trials = max_num_trials
 SD_personal_differences = 0 # 0.15 would produce some very lucky people but still realistic
 Inference_threshold_robustness_NHST = 0.05
 M0_prob = 0.5 # probability of correct guesses if M0 is true
@@ -172,7 +173,7 @@ M1_detection_rate # power = 0.93
 
 erotic_trial_per_person = 18
 True_prob = 0.5 # true probability of correct guesses in the population
-max_num_trials = 120000
+max_num_trials = max_num_trials
 SD_personal_differences = 0 # 0.15 would produce some very lucky people but still realistic
 Inference_threshold_robustness_NHST = 0.05
 M0_prob = 0.5 # probability of correct guesses if M0 is true
